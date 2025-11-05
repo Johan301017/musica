@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Music Explorer</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fab fa-spotify"></i> Spotify Music Explorer</h1>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Buscar canciones, artistas o álbumes...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="featured-section">
+                <h2>Canciones Populares</h2>
+                <div id="featuredSongs" class="songs-grid">
+                    <div class="loading">Cargando canciones...</div>
+                </div>
+            </section>
+
+            <section class="search-results" id="searchResults" style="display: none;">
+                <h2>Resultados de Búsqueda</h2>
+                <div id="searchResultsGrid" class="songs-grid"></div>
+            </section>
+
+            <section class="player-section">
+                <div class="now-playing">
+                    <div class="album-art" id="albumArt">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="song-info">
+                        <h3 id="songTitle">Selecciona una canción</h3>
+                        <p id="artistName">Artista</p>
+                    </div>
+                    <div class="player-controls">
+                        <button id="playBtn"><i class="fas fa-play"></i></button>
+                        <button id="pauseBtn" style="display: none;"><i class="fas fa-pause"></i></button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 Spotify Music Explorer - Desarrollado con <a href="https://developer.spotify.com/" target="_blank">Spotify Web API</a></p>
+        </footer>
+    </div>
+
+    <script src="assets/js/models/SpotifyModel.js"></script>
+    <script src="assets/js/views/MusicView.js"></script>
+    <script src="assets/js/controllers/MusicController.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
