@@ -5,9 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotify Music Explorer</title>
     <link rel="stylesheet" href="assets/css/styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Partículas animadas de fondo -->
+    <div class="particles" id="particles"></div>
+    <!-- Video de fondo con tinte verde -->
+    <div class="bg-video">
+        <video id="bgVideo" autoplay muted loop playsinline preload="metadata">
+            <source src="assets/media/bg.mp4" type="video/mp4">
+        </video>
+        <div class="bg-overlay"></div>
+    </div>
+    
     <div class="container">
         <header class="header">
             <h1><i class="fab fa-spotify"></i> Spotify Music Explorer</h1>
@@ -18,10 +29,12 @@
         </header>
 
         <main class="main-content">
+            
+
             <section class="featured-section">
-                <h2>Canciones Populares</h2>
-                <div id="featuredSongs" class="songs-grid">
-                    <div class="loading">Cargando canciones...</div>
+                <h2>Artistas Favoritos</h2>
+                <div id="favoriteArtistsGrid" class="songs-grid">
+                    <div class="loading">Cargando artistas...</div>
                 </div>
             </section>
 
@@ -50,6 +63,37 @@
         <footer class="footer">
             <p>&copy; 2024 Spotify Music Explorer - Desarrollado con <a href="https://developer.spotify.com/" target="_blank">Spotify Web API</a></p>
         </footer>
+    </div>
+
+    <!-- Modal de información de canción -->
+    <div id="trackInfoModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div id="trackInfoContent">
+                <div class="loading">Cargando información...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón flotante de Inicio -->
+    <button id="fabHome" class="fab-home" aria-label="Ir a inicio">
+        <i class="fas fa-home"></i>
+    </button>
+
+    <!-- Mini Player -->
+    <div id="miniPlayer" class="mini-player" style="display:none;">
+        <div class="mini-player-content">
+            <div class="mini-cover" id="miniCover"></div>
+            <div class="mini-info">
+                <div class="mini-title" id="miniTitle">-</div>
+                <div class="mini-artist" id="miniArtist">-</div>
+            </div>
+            <div class="mini-controls">
+                <button id="miniPlayBtn" class="mini-btn"><i class="fas fa-play"></i></button>
+                <button id="miniPauseBtn" class="mini-btn" style="display:none;"><i class="fas fa-pause"></i></button>
+                <button id="miniCloseBtn" class="mini-btn"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
     </div>
 
     <script src="assets/js/models/SpotifyModel.js"></script>

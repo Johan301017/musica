@@ -1,7 +1,7 @@
 class SpotifyModel {
     constructor() {
-        this.clientId = 'YOUR_CLIENT_ID'; // Reemplazar con tu Client ID de Spotify
-        this.clientSecret = 'YOUR_CLIENT_SECRET'; // Reemplazar con tu Client Secret
+        this.clientId = '7a61bd1f6b134a6a9e5162b92d25950a'; // Client ID de Spotify
+        this.clientSecret = 'c9553f9acbdf4a8ca8d4a7b41cf864d4'; // Client Secret de Spotify
         this.accessToken = null;
         this.tokenExpiry = null;
         this.baseUrl = 'https://api.spotify.com/v1';
@@ -98,6 +98,43 @@ class SpotifyModel {
         }
     }
 
+    // Obtener canciones populares desde una playlist curada (Today's Top Hits)
+    async getPopularTracks() {
+        try {
+            const playlistId = '37i9dQZF1DXcBWIGoYBM5M';
+            const data = await this.makeRequest(`/playlists/${playlistId}/tracks?limit=12`);
+            const items = data.items || [];
+            // Normalizar a objetos tipo track que usa la vista
+            return items
+                .map(i => i.track)
+                .filter(Boolean);
+        } catch (error) {
+            console.error('Error obteniendo canciones populares:', error);
+            return this.getMockPopularTracks();
+        }
+    }
+
+    // Artistas favoritos (mock, sin auth de usuario)
+    async getFavoriteArtists() {
+        try {
+            // Sin autorización de usuario, devolvemos una lista estática
+            return this.getMockFavoriteArtists();
+        } catch (error) {
+            console.error('Error obteniendo artistas favoritos:', error);
+            return this.getMockFavoriteArtists();
+        }
+    }
+
+    async getArtistById(artistId) {
+        try {
+            const data = await this.makeRequest(`/artists/${artistId}`);
+            return data;
+        } catch (error) {
+            console.error('Error obteniendo artista por ID:', error);
+            return null;
+        }
+    }
+
     // Datos mock para cuando la API no está disponible
     getMockData() {
         return [
@@ -161,6 +198,54 @@ class SpotifyModel {
                 artists: [{ name: 'Artista Nuevo 1' }],
                 images: [{ url: 'https://via.placeholder.com/300x300/1ed760/ffffff?text=New+1' }],
                 external_urls: { spotify: 'https://open.spotify.com/album/new1' }
+            }
+        ];
+    }
+
+    getMockPopularTracks() {
+        return [
+            {
+                id: 'pop1',
+                name: 'Hit Popular 1',
+                artists: [{ name: 'Artista Popular A' }],
+                album: {
+                    name: 'Álbum Popular',
+                    images: [{ url: 'https://via.placeholder.com/300x300/667eea/ffffff?text=Hit+1' }]
+                },
+                external_urls: { spotify: 'https://open.spotify.com/track/pop1' }
+            },
+            {
+                id: 'pop2',
+                name: 'Hit Popular 2',
+                artists: [{ name: 'Artista Popular B' }],
+                album: {
+                    name: 'Álbum Popular',
+                    images: [{ url: 'https://via.placeholder.com/300x300/764ba2/ffffff?text=Hit+2' }]
+                },
+                external_urls: { spotify: 'https://open.spotify.com/track/pop2' }
+            }
+        ];
+    }
+
+    getMockFavoriteArtists() {
+        return [
+            {
+                id: 'artist1',
+                name: 'The Weeknd',
+                images: [{ url: 'https://via.placeholder.com/300x300/222/fff?text=The+Weeknd' }],
+                external_urls: { spotify: 'https://open.spotify.com/artist/1Xyo4u8uXC1ZmMpatF05PJ' }
+            },
+            {
+                id: 'artist2',
+                name: 'Dua Lipa',
+                images: [{ url: 'https://via.placeholder.com/300x300/333/fff?text=Dua+Lipa' }],
+                external_urls: { spotify: 'https://open.spotify.com/artist/6M2wZ9GZgrQXHCFfjv46we' }
+            },
+            {
+                id: 'artist3',
+                name: 'Bad Bunny',
+                images: [{ url: 'https://via.placeholder.com/300x300/444/fff?text=Bad+Bunny' }],
+                external_urls: { spotify: 'https://open.spotify.com/artist/4q3ewBCX7sLwd24euuV69X' }
             }
         ];
     }

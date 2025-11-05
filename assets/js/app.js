@@ -3,6 +3,9 @@ let musicController;
 
 document.addEventListener('DOMContentLoaded', () => {
     try {
+        // Inicializar partículas animadas
+        initParticles();
+        
         // Inicializar el modelo, vista y controlador
         const model = new SpotifyModel();
         const view = new MusicView();
@@ -20,11 +23,70 @@ document.addEventListener('DOMContentLoaded', () => {
             clearSearch: () => musicController.clearSearch()
         };
         
+        // Suavizar scroll: pausar animaciones/transition durante scroll rápido
+        setupScrollSmoothing();
+        
     } catch (error) {
         console.error('❌ Error al iniciar la aplicación:', error);
         alert('Error al cargar la aplicación. Por favor, recarga la página.');
     }
 });
+
+// Función para crear partículas animadas
+function initParticles() {
+    const particlesContainer = document.getElementById('particles');
+    if (!particlesContainer) return;
+    // Respetar preferencias del usuario para reducir movimiento
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return;
+    
+    const isMobile = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+    const particleCount = isMobile ? 20 : 35;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Posición aleatoria
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        
+        // Tamaño aleatorio
+        const size = Math.random() * 4 + 1;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        
+        // Duración y delay aleatorios
+        const duration = Math.random() * 20 + 10;
+        const delay = Math.random() * 5;
+        
+        particle.style.animationDuration = duration + 's';
+        particle.style.animationDelay = delay + 's';
+        
+        particlesContainer.appendChild(particle);
+    }
+}
+
+// Pausar animaciones intensas durante scroll rápido para evitar jank
+function setupScrollSmoothing() {
+    let ticking = false;
+    let clearHandle;
+    const root = document.documentElement;
+    const onScroll = () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                root.classList.add('is-scrolling');
+                ticking = false;
+            });
+            ticking = true;
+        }
+        if (clearHandle) clearTimeout(clearHandle);
+        clearHandle = setTimeout(() => {
+            root.classList.remove('is-scrolling');
+        }, 150);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+}
 
 // Manejo de errores global
 window.addEventListener('error', (event) => {
